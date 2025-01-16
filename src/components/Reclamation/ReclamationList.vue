@@ -19,7 +19,7 @@
             <td>{{ reclamation.description }}</td>
             <td>{{ reclamation.dateReclamation }}</td>
             <td>{{ reclamation.statut }}</td>
-            <td>{{ reclamation.client?.nom || 'N/A' }}</td>
+            <td>{{ reclamation.clientId || 'N/A' }}</td>
             <td>
               <button @click="goToEditReclamation(reclamation.id)">Modifier</button>
               <button @click="deleteReclamation(reclamation.id)">Supprimer</button>

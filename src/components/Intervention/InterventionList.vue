@@ -21,7 +21,7 @@
             <td>{{ new Date(intervention.dateIntervention).toLocaleDateString() }}</td>
             <td>{{ intervention.sousGarantie ? 'Oui' : 'Non' }}</td>
             <td>{{ intervention.montantFacture }}</td>
-            <td>{{ intervention.technicien?.nom || 'Non assigné' }}</td>
+            <td>{{ intervention.technicienId || 'Non assigné' }}</td>
             <td>
               <button @click="goToEditIntervention(intervention.id)">Modifier</button>
               <button @click="deleteIntervention(intervention.id)">Supprimer</button>

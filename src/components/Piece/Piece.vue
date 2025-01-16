@@ -17,7 +17,7 @@
             <td>{{ piece.id }}</td>
             <td>{{ piece.nom }}</td>
             <td>{{ piece.prix }}</td>
-            <td>{{ piece.article.nom}}</td> 
+            <td>{{ piece.articleId}}</td> 
             <td>
               <button @click="goToEditPiece(piece.id)">Modifier</button>
               <button @click="deletePiece(piece.id)">Supprimer</button>
