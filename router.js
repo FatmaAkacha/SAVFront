@@ -12,13 +12,17 @@ import EditReclamation from '@/components/Reclamation/EditReclamation.vue';
 import Piece from '@/components/Piece/Piece.vue';
 import CreatePiece from '@/components/Piece/CreatePiece.vue';
 import EditPiece from '@/components/Piece/EditPiece.vue';
+import Login from '@/components/Authentification/Login.vue';
+import registerUser from '@/components/Authentification/Inscription.vue';
+import Role from '@/components/Authentification/Role.vue';
+import DashboardAdmin from '@/components/Dashboard.vue';
 
 const routes = [
   { path: '/clients', name: 'Client', component: Client }, 
   { path: '/create-client', name: 'CreateClient', component: CreateClient }, 
   { path: '/edit-client/:id', name: 'EditClient', component: EditClient }, 
 
-  { path: '/articles', name: 'ArticleList', component: ArticleList },
+  { path: '/articles', name: 'ArticleList', component: ArticleList , meta: { requiresAuth: true } },
   { path: '/create-article', name: 'CreateArticle', component: CreateArticle },
   { path: '/edit-article/:id', name: 'EditArticle', component: CreateArticle },
 
@@ -32,7 +36,13 @@ const routes = [
 
   { path: '/pieces', name: 'Piece', component: Piece },
   { path: '/create-piece', name: 'CreatePiece', component: CreatePiece },
-  { path: '/edit-piece/:id', name: 'EditPiece', component: EditPiece }
+  { path: '/edit-piece/:id', name: 'EditPiece', component: EditPiece },
+
+  { path: '/login', name: 'Login', component: Login },
+  { path: '/inscription', name: 'Inscription', component: registerUser },
+  { path: '/add-role', name: 'Role', component: Role},
+
+  { path: '/dashboard', name: 'Dashboard', component: DashboardAdmin}
 
 ];
 
