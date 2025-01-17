@@ -37,14 +37,17 @@
       </div>
 
       <div class="form-group">
-        <label for="clientId">Client (ID) :</label>
-        <input
-          type="number"
+        <label for="clientId">Client :</label>
+        <select
           id="clientId"
           v-model="reclamation.clientId"
           required
           class="input-field"
-        />
+        >
+          <option v-for="client in clients" :key="client.id" :value="client.id">
+            {{ client.nom }}
+          </option>
+        </select>
       </div>
 
       <div class="form-group">
@@ -56,6 +59,7 @@
 
 <script>
 import ReclamationService from '@/services/ReclamationService';
+import ClientService from '@/services/ClientService';
 
 export default {
   name: 'CreateReclamation',
@@ -67,9 +71,18 @@ export default {
         statut: 'En cours',
         clientId: null,
       },
+      clients: [], // Liste des clients
     };
   },
   methods: {
+    async fetchClients() {
+      try {
+        const response = await ClientService.getClients(); // Remplacez par votre méthode API réelle
+        this.clients = response.data;
+      } catch (error) {
+        console.error('Erreur lors de la récupération des clients:', error);
+      }
+    },
     async createReclamation() {
       try {
         await ReclamationService.createReclamation(this.reclamation);
@@ -78,6 +91,9 @@ export default {
         console.error('Erreur lors de la création:', error);
       }
     },
+  },
+  created() {
+    this.fetchClients(); // Charger les clients lors de l'initialisation du composant
   },
 };
 </script>

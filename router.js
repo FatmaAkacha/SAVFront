@@ -18,6 +18,8 @@ import Role from '@/components/Authentification/Role.vue';
 import DashboardAdmin from '@/components/Dashboard.vue';
 
 const routes = [
+  { path: '/', name: 'Login', component: Login}, 
+
   { path: '/clients', name: 'Client', component: Client }, 
   { path: '/create-client', name: 'CreateClient', component: CreateClient }, 
   { path: '/edit-client/:id', name: 'EditClient', component: EditClient }, 

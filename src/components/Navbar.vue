@@ -2,10 +2,18 @@
     <nav class="navbar">
       <ul class="navbar-list">
         <li class="navbar-item" v-for="parent in navbarStructure" :key="parent.name">
-          <router-link class="navbar-link" :to="parent.path">{{ parent.label }}</router-link>
+          <router-link
+  v-if="parent.path"
+  class="navbar-link"
+  :to="parent.path"
+>{{ parent.label }}</router-link>
           <ul v-if="parent.children && parent.children.length" class="dropdown">
             <li class="dropdown-item" v-for="child in parent.children" :key="child.name">
-              <router-link class="dropdown-link" :to="child.path">{{ child.label }}</router-link>
+              <router-link
+  v-if="child.path"
+  class="dropdown-link"
+  :to="child.path"
+>{{ child.label }}</router-link>
             </li>
           </ul>
         </li>
@@ -27,6 +35,8 @@
           },
           {
             label: "Clients",
+            path: "/clients",
+            name: "Client",
             children: [
             { label: "Liste des clients", path: "/clients", name: "Client" },
               { label: "Créer un client", path: "/create-client", name: "CreateClient" },
@@ -34,6 +44,8 @@
           },
           {
             label: "Articles",
+            path: "/articles",
+            name: "ArticleList" ,
             children: [
             { label: "Lists des articles", path: "/articles", name: "ArticleList" },
               { label: "Créer un article", path: "/create-article", name: "CreateArticle" },
@@ -41,6 +53,8 @@
           },
           {
             label: "Interventions",
+            path: "/interventions",
+            name: "InterventionList",
             children: [
             { label: "Liste des interventions", path: "/interventions", name: "InterventionList" },
               { label: "Créer une intervention", path: "/create-intervention", name: "CreateIntervention" },
@@ -48,6 +62,8 @@
           },
           {
             label: "Réclamations",
+            path: "/reclamations",
+            name: "ReclamationList",
             children: [
             { label: "Liste des réclamations", path: "/reclamations", name: "ReclamationList" },
               { label: "Créer une réclamation", path: "/create-reclamation", name: "CreateReclamation" },
@@ -55,6 +71,8 @@
           },
           {
             label: "Pièces",
+            path: "/pieces",
+            name: "Piece",
             children: [
             { label: "Liste des pièces", path: "/pieces", name: "Piece" },
               { label: "Créer une pièce", path: "/create-piece", name: "CreatePiece" },
@@ -62,6 +80,8 @@
           },
           {
             label: "Authentification",
+            path: "/login", 
+            name: "Login",
             children: [
             { label: "Ajouter un rôle", path: "/add-role", name: "Role" },
             { label: "Se déconnecter", path: "/login", name: "Login" },

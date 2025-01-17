@@ -21,7 +21,7 @@
           <td>{{ reclamation.description }}</td>
           <td>{{ reclamation.dateReclamation }}</td>
           <td>{{ reclamation.statut }}</td>
-          <td>{{ reclamation.clientId || 'N/A' }}</td>
+          <td>{{ getClientName(reclamation.clientId) || 'N/A' }}</td>
           <td>
             <button @click="goToEditReclamation(reclamation.id)" class="action-button">
               <i class="fas fa-edit"></i> Modifier
@@ -38,15 +38,18 @@
 
 <script>
 import ReclamationService from '@/services/ReclamationService';
+import ClientService from '@/services/ClientService';
 
 export default {
   name: 'ReclamationList',
   data() {
     return {
       reclamations: [],
+      clients: [], // Liste des clients
     };
   },
   async created() {
+    await this.fetchClients(); // Charger les clients avant de charger les réclamations
     this.fetchReclamations();
   },
   methods: {
@@ -57,6 +60,18 @@ export default {
       } catch (error) {
         console.error('Erreur lors de la récupération des réclamations:', error);
       }
+    },
+    async fetchClients() {
+      try {
+        const response = await ClientService.getClients();
+        this.clients = response.data;
+      } catch (error) {
+        console.error('Erreur lors de la récupération des clients:', error);
+      }
+    },
+    getClientName(clientId) {
+      const client = this.clients.find((client) => client.id === clientId);
+      return client ? client.nom : null;
     },
     goToCreateReclamation() {
       this.$router.push({ name: 'CreateReclamation' });
@@ -75,6 +90,7 @@ export default {
   },
 };
 </script>
+
 
 <style scoped>
 /* Général */
