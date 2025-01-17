@@ -177,7 +177,7 @@ export default {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 15px;
+    gap: 20px;
   }
 
   /* List container for most reclaimed articles */
@@ -217,11 +217,10 @@ export default {
     font-size: 1.2rem;
     color: #333;
   }
-  .canvas{
+  :deep(.chart-list){
     display: block;
     box-sizing: border-box;
-    height: 23%;
-    width: 23%;
+    margin-left: 42%;
   }
 </style>
 

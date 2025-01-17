@@ -19,7 +19,7 @@
           <td>{{ piece.id }}</td>
           <td>{{ piece.nom }}</td>
           <td>{{ piece.prix }}</td>
-          <td>{{ piece.articleId }}</td>
+          <td>{{ getArticleName(piece.articleId) || 'N/A' }}</td>
           <td>
             <button @click="goToEditPiece(piece.id)" class="action-button">
               <i class="fas fa-edit"></i> Modifier
@@ -33,18 +33,20 @@
     </table>
   </div>
 </template>
-
 <script>
 import PieceService from '@/services/PieceService';
+import ArticleService from '@/services/ArticleService';
 
 export default {
   name: 'PieceList',
   data() {
     return {
       pieces: [],
+      articles: [], // Liste des articles
     };
   },
-  created() {
+  async created() {
+    await this.fetchArticles(); // Charger les articles avant de charger les pièces
     this.fetchPieces();
   },
   methods: {
@@ -56,6 +58,18 @@ export default {
         console.error('Erreur lors de la récupération des pièces:', error);
       }
     },
+    async fetchArticles() {
+      try {
+        const response = await ArticleService.getArticles();
+        this.articles = response.data;
+      } catch (error) {
+        console.error('Erreur lors de la récupération des articles:', error);
+      }
+    },
+    getArticleName(articleId) {
+      const article = this.articles.find((article) => article.id === articleId);
+      return article ? article.nom : null;
+    },
     goToCreatePiece() {
       this.$router.push({ name: 'CreatePiece' });
     },
@@ -64,24 +78,18 @@ export default {
     },
     async deletePiece(pieceId) {
       try {
-        // Afficher une alerte de confirmation
         const confirmed = window.confirm('Êtes-vous sûr de vouloir supprimer cette pièce ?');
-        if (!confirmed) {
-          return; // Arrêter si l'utilisateur annule
-        }
+        if (!confirmed) return;
 
-        // Supprimer la pièce
         await PieceService.deletePiece(pieceId);
-
-        // Rafraîchir la liste après suppression
         this.fetchPieces();
         alert('Pièce supprimée avec succès.');
       } catch (error) {
         console.error('Erreur lors de la suppression de la pièce:', error);
         alert('Une erreur est survenue lors de la suppression.');
       }
-    }
-  }
+    },
+  },
 };
 </script>
 
