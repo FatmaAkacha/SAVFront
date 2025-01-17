@@ -63,25 +63,24 @@ export default {
       this.$router.push({ name: 'EditPiece', params: { id: pieceId } });
     },
     async deletePiece(pieceId) {
-  try {
-    // Afficher une alerte de confirmation
-    const confirmed = window.confirm('Êtes-vous sûr de vouloir supprimer cette pièce ?');
-    if (!confirmed) {
-      return; // Arrêter si l'utilisateur annule
+      try {
+        // Afficher une alerte de confirmation
+        const confirmed = window.confirm('Êtes-vous sûr de vouloir supprimer cette pièce ?');
+        if (!confirmed) {
+          return; // Arrêter si l'utilisateur annule
+        }
+
+        // Supprimer la pièce
+        await PieceService.deletePiece(pieceId);
+
+        // Rafraîchir la liste après suppression
+        this.fetchPieces();
+        alert('Pièce supprimée avec succès.');
+      } catch (error) {
+        console.error('Erreur lors de la suppression de la pièce:', error);
+        alert('Une erreur est survenue lors de la suppression.');
+      }
     }
-
-    // Supprimer la pièce
-    await PieceService.deletePiece(pieceId);
-
-    // Rafraîchir la liste après suppression
-    this.fetchPieces();
-    alert('Pièce supprimée avec succès.');
-  } catch (error) {
-    console.error('Erreur lors de la suppression de la pièce:', error);
-    alert('Une erreur est survenue lors de la suppression.');
-  }
-}
-
   }
 };
 </script>

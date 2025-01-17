@@ -2,7 +2,9 @@
   <div class="intervention-list">
     <h1 class="title">Liste des Interventions</h1>
     <div class="action-bar">
-      <button class="btn-primary" @click="goToCreateIntervention">Ajouter une Intervention</button>
+      <button class="btn-primary" @click="goToCreateIntervention">
+        <i class="fas fa-plus-circle"></i> Ajouter une Intervention
+      </button>
     </div>
     <table class="table">
       <thead>
@@ -23,13 +25,12 @@
           <td>{{ intervention.sousGarantie ? 'Oui' : 'Non' }}</td>
           <td>{{ intervention.montantFacture }}</td>
           <td>
-            <!-- Afficher les détails de la réclamation -->
             <span v-if="intervention.reclamation">
               {{ intervention.reclamation.description }}
             </span>
             <span v-else>Non assignée</span>
           </td>
-          <td>{{ intervention.technicienId || 'Non assigné' }}</td>
+          <td>{{ getTechnicianName(intervention.technicienId) || 'Non assigné' }}</td>
           <td>
             <button @click="goToEditIntervention(intervention.id)" class="action-button">
               <i class="fas fa-edit"></i> Modifier
@@ -46,30 +47,31 @@
     </table>
   </div>
 </template>
-<script>
 
+<script>
 import InterventionService from '@/services/InterventionService';
 import ReclamationService from '@/services/ReclamationService';
+import TechnicienService from '@/services/TechnicienService';  
 
 export default {
   name: 'InterventionList',
   data() {
     return {
       interventions: [],
+      techniciens: [], 
     };
   },
   created() {
     this.fetchInterventions();
+    this.fetchTechnicians();  
   },
   methods: {
     async fetchInterventions() {
       try {
-        // Charger les interventions
         const response = await InterventionService.getInterventions();
         const interventions = response.data;
 
-        // Charger les détails des réclamations
-        const reclamationIds = [...new Set(interventions.map(i => i.reclamationId))].filter(Boolean); // Uniques et non null
+        const reclamationIds = [...new Set(interventions.map(i => i.reclamationId))].filter(Boolean);
         const reclamationResponses = await Promise.all(
           reclamationIds.map(id => ReclamationService.getReclamationById(id))
         );
@@ -79,7 +81,6 @@ export default {
           return map;
         }, {});
 
-        // Ajouter les détails des réclamations aux interventions
         this.interventions = interventions.map(intervention => ({
           ...intervention,
           reclamation: reclamationsMap[intervention.reclamationId] || null,
@@ -88,31 +89,43 @@ export default {
         console.error('Erreur lors de la récupération des interventions:', error);
       }
     },
+
+    async fetchTechnicians() {
+      try {
+        const response = await TechnicienService.getTechniciens();
+        this.techniciens = response.data; 
+      } catch (error) {
+        console.error('Erreur lors de la récupération des techniciens:', error);
+      }
+    },
+
+    getTechnicianName(technicienId) {
+      const technicien = this.techniciens.find(t => t.id === technicienId);
+      return technicien ? `${technicien.nom}` : null; 
+    },
+
     goToCreateIntervention() {
       this.$router.push({ name: 'CreateIntervention' });
     },
+
     goToEditIntervention(id) {
       this.$router.push({ name: 'EditIntervention', params: { id } });
     },
+
     async deleteIntervention(id) {
-  try {
-    // Afficher une alerte de confirmation
-    const confirmed = window.confirm('Êtes-vous sûr de vouloir supprimer cette intervention ?');
-    if (!confirmed) {
-      return; // Si l'utilisateur annule, arrêter la méthode
-    }
+      try {
+        const confirmed = window.confirm('Êtes-vous sûr de vouloir supprimer cette intervention ?');
+        if (!confirmed) return;
 
-    // Supprimer l'intervention
-    await InterventionService.deleteIntervention(id);
+        await InterventionService.deleteIntervention(id);
+        this.fetchInterventions();
+        alert('Intervention supprimée avec succès.');
+      } catch (error) {
+        console.error("Erreur lors de la suppression de l'intervention:", error);
+        alert('Une erreur est survenue lors de la suppression.');
+      }
+    },
 
-    // Rafraîchir la liste des interventions
-    this.fetchInterventions();
-    alert('Intervention supprimée avec succès.');
-  } catch (error) {
-    console.error("Erreur lors de la suppression de l'intervention:", error);
-    alert('Une erreur est survenue lors de la suppression.');
-  }
-},
     async calculateInvoice(id) {
       try {
         const response = await InterventionService.calculateInvoice(id);
@@ -124,8 +137,8 @@ export default {
     },
   },
 };
-
 </script>
+
 <style scoped>
 /* Général */
 .intervention-list {
@@ -227,7 +240,6 @@ td button:hover {
   transform: scale(1.1);
   border: 1px solid white;
 }
-
 
 tr:nth-child(odd) {
   background-color: #FFFFFF;

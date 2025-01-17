@@ -2,7 +2,9 @@
   <div class="client-list">
     <h1 class="title">Liste des Clients</h1>
     <div class="action-bar">
-      <button class="btn-primary" @click="goToCreateClient">Ajouter un Client</button>
+      <button class="btn-primary" @click="goToCreateClient">
+        <i class="fas fa-plus-circle"></i> Ajouter un Client
+      </button>
     </div>
     <table class="table">
       <thead>
@@ -64,8 +66,11 @@ export default {
     },
     async deleteClient(clientId) {
       try {
-        await ClientService.deleteClient(clientId);
-        this.fetchClients();
+        const confirmed = window.confirm('Êtes-vous sûr de vouloir supprimer ce client ?');
+        if (confirmed) {
+          await ClientService.deleteClient(clientId);
+          this.fetchClients();
+        }
       } catch (error) {
         console.error('Erreur lors de la suppression du client:', error);
       }
@@ -80,7 +85,6 @@ export default {
   font-family: 'Poppins', sans-serif;
   color: #2C3E50;
   padding: 20px;
-
 }
 
 .title {

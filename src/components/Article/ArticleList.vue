@@ -2,7 +2,7 @@
   <div class="article-list">
     <h1 class="title">Liste des Articles</h1>
     <div class="action-bar">
-      <button class="btn-primary" @click="goToCreateArticle">Ajouter un Article</button>
+      <button class="btn-primary" @click="goToCreateArticle"><i class="fas fa-plus-circle"></i> Ajouter un Article</button>
     </div>
     <table class="table">
       <thead>
@@ -65,28 +65,28 @@ export default {
       this.$router.push({ name: 'EditArticle', params: { id: articleId } });
     },
     async deleteArticle(articleId) {
-  try {
-    // Afficher une alerte de confirmation
-    const confirmed = window.confirm('Êtes-vous sûr de vouloir supprimer cet article ?');
-    if (!confirmed) {
-      return; // Arrêter la méthode si l'utilisateur annule
-    }
+      try {
+        // Afficher une alerte de confirmation
+        const confirmed = window.confirm('Êtes-vous sûr de vouloir supprimer cet article ?');
+        if (!confirmed) {
+          return; // Arrêter la méthode si l'utilisateur annule
+        }
 
-    // Supprimer l'article
-    await ArticleService.deleteArticle(articleId);
+        // Supprimer l'article
+        await ArticleService.deleteArticle(articleId);
 
-    // Rafraîchir la liste des articles
-    this.fetchArticles();
-    alert('Article supprimé avec succès.');
-  } catch (error) {
-    console.error("Erreur lors de la suppression de l'article:", error);
-    alert('Une erreur est survenue lors de la suppression.');
-  }
-},
-
+        // Rafraîchir la liste des articles
+        this.fetchArticles();
+        alert('Article supprimé avec succès.');
+      } catch (error) {
+        console.error("Erreur lors de la suppression de l'article:", error);
+        alert('Une erreur est survenue lors de la suppression.');
+      }
+    },
   },
 };
 </script>
+
 <style scoped>
 /* Général */
 

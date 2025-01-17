@@ -37,34 +37,40 @@
       </div>
 
       <div class="form-group">
-  <label for="reclamationId">Réclamation associée :</label>
-  <select
-    id="reclamationId"
-    v-model="intervention.reclamationId"
-    required
-    class="input-field"
-  >
-    <option
-      v-for="reclamation in reclamations"
-      :key="reclamation.id"
-      :value="reclamation.id"
-    >
-      {{ reclamation.description }}
-    </option>
-  </select>
-</div>
-
-
-      <div class="form-group">
-        <label for="technicienId">Technicien affecté (ID) :</label>
-        <input
-          type="number"
-          id="technicienId"
-          v-model="intervention.technicienId"
-          placeholder="Ex : 2"
+        <label for="reclamationId">Réclamation associée :</label>
+        <select
+          id="reclamationId"
+          v-model="intervention.reclamationId"
           required
           class="input-field"
-        />
+        >
+          <option
+            v-for="reclamation in reclamations"
+            :key="reclamation.id"
+            :value="reclamation.id"
+          >
+            {{ reclamation.description }}
+          </option>
+        </select>
+      </div>
+
+      <!-- Mise à jour du champ pour choisir le technicien -->
+      <div class="form-group">
+        <label for="technicienId">Technicien affecté :</label>
+        <select
+          id="technicienId"
+          v-model="intervention.technicienId"
+          required
+          class="input-field"
+        >
+          <option
+            v-for="technicien in techniciens"
+            :key="technicien.id"
+            :value="technicien.id"
+          >
+            {{ technicien.nom }} <!-- Affiche le nom du technicien -->
+          </option>
+        </select>
       </div>
 
       <div class="form-group">
@@ -76,10 +82,10 @@
   </div>
 </template>
 
-
 <script>
 import InterventionService from '@/services/InterventionService';
 import ReclamationService from '@/services/ReclamationService';
+import TechnicienService from '@/services/TechnicienService'; // Ajouter le service pour les techniciens
 
 export default {
   name: 'CreateIntervention',
@@ -93,12 +99,14 @@ export default {
         technicienId: null,
       },
       reclamations: [], // Liste des réclamations
+      techniciens: [], // Liste des techniciens
       isEditMode: false,
     };
   },
   async created() {
-    // Charger les réclamations
+    // Charger les réclamations et les techniciens
     await this.fetchReclamations();
+    await this.fetchTechniciens();
 
     // Charger les données si mode édition
     const interventionId = this.$route.params.id;
@@ -115,6 +123,14 @@ export default {
         this.reclamations = response.data;
       } catch (error) {
         console.error('Erreur lors de la récupération des réclamations:', error);
+      }
+    },
+    async fetchTechniciens() {
+      try {
+        const response = await TechnicienService.getTechniciens(); // Assurez-vous que ce service récupère la liste des techniciens
+        this.techniciens = response.data;
+      } catch (error) {
+        console.error('Erreur lors de la récupération des techniciens:', error);
       }
     },
     async saveIntervention() {
@@ -135,7 +151,6 @@ export default {
   },
 };
 </script>
-
 
 <style scoped>
 /* Global form styling */
