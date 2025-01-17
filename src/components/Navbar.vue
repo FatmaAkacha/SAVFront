@@ -3,17 +3,19 @@
       <ul class="navbar-list">
         <li class="navbar-item" v-for="parent in navbarStructure" :key="parent.name">
           <router-link
-  v-if="parent.path"
-  class="navbar-link"
-  :to="parent.path"
->{{ parent.label }}</router-link>
+            v-if="parent.path"
+            class="navbar-link"
+            :class="{'dashboard-link': parent.label === 'Dashboard' }"
+            :to="parent.path"
+          >{{ parent.label }}</router-link>
+
           <ul v-if="parent.children && parent.children.length" class="dropdown">
             <li class="dropdown-item" v-for="child in parent.children" :key="child.name">
               <router-link
-  v-if="child.path"
-  class="dropdown-link"
-  :to="child.path"
->{{ child.label }}</router-link>
+                v-if="child.path"
+                class="dropdown-link"
+                :to="child.path"
+              >{{ child.label }}</router-link>
             </li>
           </ul>
         </li>
@@ -199,6 +201,15 @@
 .dropdown-link:focus {
   background-color: #1abc9c;
   padding-left: 20px; /* Ajout d'une indentation pour plus de profondeur */
+}
+/* Spécifique à Dashboard */
+.dashboard-link {
+  color: #3498db; /* Couleur bleu par exemple, vous pouvez personnaliser */
+}
+
+.dashboard-link:hover,
+.dashboard-link:focus {
+  color: #1abc9c; /* Couleur au survol */
 }
 
 
