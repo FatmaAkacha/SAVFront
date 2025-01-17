@@ -23,7 +23,7 @@
           <td>{{ intervention.id }}</td>
           <td>{{ new Date(intervention.dateIntervention).toLocaleDateString() }}</td>
           <td>{{ intervention.sousGarantie ? 'Oui' : 'Non' }}</td>
-          <td>{{ intervention.montantFacture }}</td>
+          <td>{{ intervention.montantFacture ? intervention.montantFacture + ' €' : intervention.montantFacture }}</td>
           <td>
             <span v-if="intervention.reclamation">
               {{ intervention.reclamation.description }}

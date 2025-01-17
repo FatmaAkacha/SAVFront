@@ -104,77 +104,103 @@
   </script>
   
   <style scoped>
-  /* Navbar Container */
-  .navbar {
-    background-color: #2c3e50;
-    color: white;
-    padding: 10px 20px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  }
-  
-  /* Navbar List */
-  .navbar-list {
-    display: flex;
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    justify-content: space-around;
-    align-items: center;
-  }
-  
-  /* Navbar Item */
-  .navbar-item {
-    position: relative;
-  }
-  
-  /* Navbar Link */
-  .navbar-link {
-    text-decoration: none;
-    color: white;
-    font-size: 1.1rem;
-    font-weight: 500;
-    padding: 8px 12px;
-    transition: color 0.3s ease;
-  }
-  
-  .navbar-link:hover {
-    color: #1abc9c;
-  }
-  
-  /* Dropdown Menu */
-  .dropdown {
-    position: absolute;
-    top: 100%;
-    left: 0;
-    background-color: #34495e;
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    display: none;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    border-radius: 4px;
-  }
-  
-  .navbar-item:hover .dropdown {
-    display: block;
-  }
-  
-  /* Dropdown Item */
-  .dropdown-item {
-    margin: 0;
-  }
-  
-  .dropdown-link {
-    text-decoration: none;
-    color: white;
-    font-size: 0.9rem;
-    padding: 8px 16px;
-    display: block;
-    transition: background-color 0.3s ease;
-  }
-  
-  .dropdown-link:hover {
-    background-color: #1abc9c;
-  }
+/* Navbar Container */
+.navbar {
+  background-color: #2c3e50;
+  color: white;
+  padding: 10px 20px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Navbar List */
+.navbar-list {
+  display: flex;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  justify-content: space-around;
+  align-items: center;
+}
+
+/* Navbar Item */
+.navbar-item {
+  position: relative;
+  display: inline-block;
+  padding: 8px 12px; /* Ajouter un peu de marge interne */
+  transition: transform 0.3s ease;
+}
+
+/* Ajout d'un effet au survol */
+.navbar-item:hover {
+  transform: scale(1.05); /* Agrandir légèrement l'élément au survol */
+}
+
+/* Navbar Link */
+.navbar-link {
+  text-decoration: none;
+  color: white;
+  font-size: 1.1rem;
+  font-weight: 500;
+  padding: 8px 12px;
+  transition: color 0.3s ease, transform 0.3s ease;
+}
+
+.navbar-link:hover,
+.navbar-link:focus {
+  color: #1abc9c;
+  transform: translateY(-2px); /* Légère élévation au survol */
+}
+
+/* Dropdown Menu */
+.dropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background-color: #34495e;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: none;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  border-radius: 4px;
+  min-width: 100%;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(10px);
+  transition: opacity 0.3s ease, visibility 0s 0.3s, transform 0.3s ease;
+}
+
+/* Afficher le dropdown au survol du parent */
+.navbar-item:hover .dropdown {
+  display: block;
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+  transition: opacity 0.3s ease, visibility 0s, transform 0.3s ease;
+}
+
+/* Dropdown Item */
+.dropdown-item {
+  margin: 0;
+}
+
+/* Dropdown Link */
+.dropdown-link {
+  text-decoration: none;
+  color: white;
+  font-size: 0.9rem;
+  padding: 8px 16px;
+  display: block;
+  transition: background-color 0.3s ease, padding-left 0.3s ease;
+}
+
+.dropdown-link:hover,
+.dropdown-link:focus {
+  background-color: #1abc9c;
+  padding-left: 20px; /* Ajout d'une indentation pour plus de profondeur */
+}
+
+
   </style>
   
