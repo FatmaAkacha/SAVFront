@@ -1,108 +1,215 @@
 <template>
-    <div>
-      <h1>{{ isEditMode ? 'Modifier' : 'Ajouter' }} une Intervention</h1>
-      <form @submit.prevent="saveIntervention">
-        <div>
-          <label for="date">Date de l'intervention :</label>
-          <input
-            type="date"
-            id="date"
-            v-model="intervention.dateIntervention"
-            required
-          />
-        </div>
-        <div>
-          <label for="sousGarantie">Sous Garantie :</label>
-          <input
-            type="checkbox"
-            id="sousGarantie"
-            v-model="intervention.sousGarantie"
-          />
-        </div>
-        <div>
-          <label for="montantFacture">Montant Facture (€) :</label>
-          <input
-            type="number"
-            id="montantFacture"
-            v-model="intervention.montantFacture"
-            placeholder="Ex : 150.00"
-            step="0.01"
-            min="0"
-          />
-        </div>
-        <div>
-          <label for="reclamationId">Réclamation associée (ID) :</label>
-          <input
-            type="number"
-            id="reclamationId"
-            v-model="intervention.reclamationId"
-            placeholder="Ex : 1"
-            required
-          />
-        </div>
-        <div>
-          <label for="technicienId">Technicien affecté (ID) :</label>
-          <input
-            type="number"
-            id="technicienId"
-            v-model="intervention.technicienId"
-            placeholder="Ex : 2"
-            required
-          />
-        </div>
-        <div>
-          <button type="submit">{{ isEditMode ? 'Modifier' : 'Ajouter' }}</button>
-          <button type="button" @click="cancel">Annuler</button>
-        </div>
-      </form>
-    </div>
-  </template>
-  
-  <script>
-  import InterventionService from '@/services/InterventionService';
-  
-  export default {
-    name: 'CreateIntervention',
-    data() {
-      return {
-        intervention: {
-          dateIntervention: '',
-          sousGarantie: false,
-          montantFacture: 0.0,
-          reclamationId: null,
-          technicienId: null,
-        },
-        isEditMode: false,
-      };
-    },
-    async created() {
-      const interventionId = this.$route.params.id;
-      if (interventionId) {
-        this.isEditMode = true;
-        const response = await InterventionService.getInterventionById(interventionId);
-        this.intervention = response.data;
+  <div class="form-container">
+    <h1>{{ isEditMode ? 'Modifier' : 'Ajouter' }} une Intervention</h1>
+    <form @submit.prevent="saveIntervention">
+      <div class="form-group">
+        <label for="date">Date de l'intervention :</label>
+        <input
+          type="date"
+          id="date"
+          v-model="intervention.dateIntervention"
+          required
+          class="input-field"
+        />
+      </div>
+
+      <div class="form-group">
+        <label for="sousGarantie">Sous Garantie :</label>
+        <input
+          type="checkbox"
+          id="sousGarantie"
+          v-model="intervention.sousGarantie"
+          class="checkbox"
+        />
+      </div>
+
+      <div class="form-group">
+        <label for="montantFacture">Montant Facture (€) :</label>
+        <input
+          type="number"
+          id="montantFacture"
+          v-model="intervention.montantFacture"
+          placeholder="Ex : 150.00"
+          step="0.01"
+          min="0"
+          class="input-field"
+        />
+      </div>
+
+      <div class="form-group">
+        <label for="reclamationId">Réclamation associée (ID) :</label>
+        <input
+          type="number"
+          id="reclamationId"
+          v-model="intervention.reclamationId"
+          placeholder="Ex : 1"
+          required
+          class="input-field"
+        />
+      </div>
+
+      <div class="form-group">
+        <label for="technicienId">Technicien affecté (ID) :</label>
+        <input
+          type="number"
+          id="technicienId"
+          v-model="intervention.technicienId"
+          placeholder="Ex : 2"
+          required
+          class="input-field"
+        />
+      </div>
+
+      <div class="form-group">
+        <button type="submit" class="submit-button">{{ isEditMode ? 'Modifier' : 'Ajouter' }}</button> &nbsp; &nbsp;
+        <button type="button" @click="cancel" class="cancel-button">Annuler</button>
+      </div>
+    </form>
+  </div>
+</template>
+
+<script>
+import InterventionService from '@/services/InterventionService';
+
+export default {
+  name: 'CreateIntervention',
+  data() {
+    return {
+      intervention: {
+        dateIntervention: '',
+        sousGarantie: false,
+        montantFacture: 0.0,
+        reclamationId: null,
+        technicienId: null,
+      },
+      isEditMode: false,
+    };
+  },
+  async created() {
+    const interventionId = this.$route.params.id;
+    if (interventionId) {
+      this.isEditMode = true;
+      const response = await InterventionService.getInterventionById(interventionId);
+      this.intervention = response.data;
+    }
+  },
+  methods: {
+    async saveIntervention() {
+      try {
+        if (this.isEditMode) {
+          await InterventionService.updateIntervention(this.intervention.id, this.intervention);
+        } else {
+          await InterventionService.createIntervention(this.intervention);
+        }
+        this.$router.push({ name: 'InterventionList' });
+      } catch (error) {
+        console.error('Erreur lors de l\'enregistrement de l\'intervention:', error);
       }
     },
-    methods: {
-      async saveIntervention() {
-        try {
-          if (this.isEditMode) {
-            await InterventionService.updateIntervention(this.intervention.id, this.intervention);
-          } else {
-            await InterventionService.createIntervention(this.intervention);
-          }
-          this.$router.push({ name: 'InterventionList' });
-        } catch (error) {
-          console.error('Erreur lors de l\'enregistrement de l\'intervention:', error);
-        }
-      },
-      cancel() {
-        this.$router.push({ name: 'InterventionList' });
-      },
+    cancel() {
+      this.$router.push({ name: 'InterventionList' });
     },
-  };
-  </script>
-  
-  <style scoped>
-  /* Ajouter vos styles ici */
-  </style>  
+  },
+};
+</script>
+
+<style scoped>
+/* Global form styling */
+.form-container {
+  max-width: 800px;
+  margin: 30px auto;
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  margin-top: 100px;
+}
+
+h1 {
+  text-align: center;
+  color: #4f6d7a;
+  font-size: 2.4rem;
+  margin-bottom: 30px;
+}
+
+/* Input fields */
+.input-field {
+  width: 100%;
+  padding: 12px;
+  margin-top: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 1rem;
+  box-sizing: border-box;
+  transition: all 0.3s ease;
+}
+
+.input-field:focus {
+  border-color: #61a0af;
+  outline: none;
+  box-shadow: 0 0 5px rgba(97, 160, 175, 0.5);
+}
+
+/* Checkbox styling */
+.checkbox {
+  transform: scale(1.2);
+  width: 100px;
+  height: 15px;
+}
+
+/* Form group for aligning elements */
+.form-group {
+  margin-bottom: 20px;
+}
+
+/* Submit Button */
+.submit-button {
+  padding: 12px 24px;
+  background-color: #1ea809;
+  color: white;
+  font-size: 1rem;
+  border: none;
+  border-radius: 30px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.submit-button:hover {
+  background-color: #17a512;
+  transform: translateY(-3px);
+}
+
+.submit-button:active {
+  transform: translateY(0);
+}
+
+/* Cancel Button */
+.cancel-button {
+  padding: 12px 24px;
+  background-color: #e0e0e0;
+  color: #333;
+  font-size: 1rem;
+  border: none;
+  border-radius: 30px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.cancel-button:hover {
+  background-color: #ccc;
+  transform: translateY(-3px);
+}
+
+.cancel-button:active {
+  transform: translateY(0);
+}
+
+/* Mobile responsiveness */
+@media (max-width: 768px) {
+  .form-container {
+    padding: 15px;
+  }
+}
+</style>
