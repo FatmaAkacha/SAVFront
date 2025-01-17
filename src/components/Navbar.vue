@@ -5,7 +5,7 @@
           <router-link
             v-if="parent.path"
             class="navbar-link"
-            :class="{'dashboard-link': parent.label === 'Dashboard' }"
+            :class="{'dashboard-link': parent.label === 'Tableau de bord' }"
             :to="parent.path"
           >{{ parent.label }}</router-link>
 
@@ -30,7 +30,7 @@
       return {
         navbarStructure: [
         {
-            label: "Dashboard",
+            label: "Tableau de bord",
             path: "/dashboard",
             name: "Dashboard",
             children: [],
