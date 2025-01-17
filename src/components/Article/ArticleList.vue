@@ -65,13 +65,25 @@ export default {
       this.$router.push({ name: 'EditArticle', params: { id: articleId } });
     },
     async deleteArticle(articleId) {
-      try {
-        await ArticleService.deleteArticle(articleId);
-        this.fetchArticles();
-      } catch (error) {
-        console.error('Erreur lors de la suppression de l\'article:', error);
-      }
-    },
+  try {
+    // Afficher une alerte de confirmation
+    const confirmed = window.confirm('Êtes-vous sûr de vouloir supprimer cet article ?');
+    if (!confirmed) {
+      return; // Arrêter la méthode si l'utilisateur annule
+    }
+
+    // Supprimer l'article
+    await ArticleService.deleteArticle(articleId);
+
+    // Rafraîchir la liste des articles
+    this.fetchArticles();
+    alert('Article supprimé avec succès.');
+  } catch (error) {
+    console.error("Erreur lors de la suppression de l'article:", error);
+    alert('Une erreur est survenue lors de la suppression.');
+  }
+},
+
   },
 };
 </script>

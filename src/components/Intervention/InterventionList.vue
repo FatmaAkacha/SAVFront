@@ -11,7 +11,7 @@
           <th>Date</th>
           <th>Sous Garantie</th>
           <th>Montant Facture</th>
-          <th>Reclamation </th>
+          <th>Réclamation</th>
           <th>Technicien</th>
           <th>Actions</th>
         </tr>
@@ -22,7 +22,13 @@
           <td>{{ new Date(intervention.dateIntervention).toLocaleDateString() }}</td>
           <td>{{ intervention.sousGarantie ? 'Oui' : 'Non' }}</td>
           <td>{{ intervention.montantFacture }}</td>
-          <td>{{ intervention.reclamationId || 'Non assigné' }}</td>
+          <td>
+            <!-- Afficher les détails de la réclamation -->
+            <span v-if="intervention.reclamation">
+              {{ intervention.reclamation.description }}
+            </span>
+            <span v-else>Non assignée</span>
+          </td>
           <td>{{ intervention.technicienId || 'Non assigné' }}</td>
           <td>
             <button @click="goToEditIntervention(intervention.id)" class="action-button">
@@ -32,7 +38,7 @@
               <i class="fas fa-trash-alt"></i> Supprimer
             </button>
             <button @click="calculateInvoice(intervention.id)" class="action-button-calculate">
-              <i class="fas fa-calculator"></i> Facture Réglé
+              <i class="fas fa-calculator"></i> Facture Réglée
             </button>
           </td>
         </tr>
@@ -40,9 +46,10 @@
     </table>
   </div>
 </template>
-
 <script>
+
 import InterventionService from '@/services/InterventionService';
+import ReclamationService from '@/services/ReclamationService';
 
 export default {
   name: 'InterventionList',
@@ -57,8 +64,26 @@ export default {
   methods: {
     async fetchInterventions() {
       try {
+        // Charger les interventions
         const response = await InterventionService.getInterventions();
-        this.interventions = response.data;
+        const interventions = response.data;
+
+        // Charger les détails des réclamations
+        const reclamationIds = [...new Set(interventions.map(i => i.reclamationId))].filter(Boolean); // Uniques et non null
+        const reclamationResponses = await Promise.all(
+          reclamationIds.map(id => ReclamationService.getReclamationById(id))
+        );
+
+        const reclamationsMap = reclamationResponses.reduce((map, res) => {
+          map[res.data.id] = res.data;
+          return map;
+        }, {});
+
+        // Ajouter les détails des réclamations aux interventions
+        this.interventions = interventions.map(intervention => ({
+          ...intervention,
+          reclamation: reclamationsMap[intervention.reclamationId] || null,
+        }));
       } catch (error) {
         console.error('Erreur lors de la récupération des interventions:', error);
       }
@@ -70,13 +95,24 @@ export default {
       this.$router.push({ name: 'EditIntervention', params: { id } });
     },
     async deleteIntervention(id) {
-      try {
-        await InterventionService.deleteIntervention(id);
-        this.fetchInterventions();
-      } catch (error) {
-        console.error('Erreur lors de la suppression de l\'intervention:', error);
-      }
-    },
+  try {
+    // Afficher une alerte de confirmation
+    const confirmed = window.confirm('Êtes-vous sûr de vouloir supprimer cette intervention ?');
+    if (!confirmed) {
+      return; // Si l'utilisateur annule, arrêter la méthode
+    }
+
+    // Supprimer l'intervention
+    await InterventionService.deleteIntervention(id);
+
+    // Rafraîchir la liste des interventions
+    this.fetchInterventions();
+    alert('Intervention supprimée avec succès.');
+  } catch (error) {
+    console.error("Erreur lors de la suppression de l'intervention:", error);
+    alert('Une erreur est survenue lors de la suppression.');
+  }
+},
     async calculateInvoice(id) {
       try {
         const response = await InterventionService.calculateInvoice(id);
@@ -88,8 +124,8 @@ export default {
     },
   },
 };
-</script>
 
+</script>
 <style scoped>
 /* Général */
 .intervention-list {

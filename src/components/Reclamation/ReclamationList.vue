@@ -80,13 +80,27 @@ export default {
       this.$router.push({ name: 'EditReclamation', params: { id } });
     },
     async deleteReclamation(id) {
-      try {
-        await ReclamationService.deleteReclamation(id);
-        this.fetchReclamations();
-      } catch (error) {
-        console.error('Erreur lors de la suppression:', error);
-      }
-    },
+  try {
+    // Afficher une boîte de dialogue de confirmation
+    const confirmed = window.confirm('Êtes-vous sûr de vouloir supprimer cette réclamation ?');
+    if (!confirmed) {
+      return; // Arrêter l'exécution si l'utilisateur annule
+    }
+
+    // Supprimer la réclamation
+    await ReclamationService.deleteReclamation(id);
+
+    // Rafraîchir la liste des réclamations
+    this.fetchReclamations();
+
+    // Afficher un message de succès
+    alert('Réclamation supprimée avec succès.');
+  } catch (error) {
+    console.error('Erreur lors de la suppression:', error);
+    alert('Une erreur est survenue lors de la suppression.');
+  }
+},
+
   },
 };
 </script>

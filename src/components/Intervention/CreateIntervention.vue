@@ -37,16 +37,23 @@
       </div>
 
       <div class="form-group">
-        <label for="reclamationId">Réclamation associée (ID) :</label>
-        <input
-          type="number"
-          id="reclamationId"
-          v-model="intervention.reclamationId"
-          placeholder="Ex : 1"
-          required
-          class="input-field"
-        />
-      </div>
+  <label for="reclamationId">Réclamation associée :</label>
+  <select
+    id="reclamationId"
+    v-model="intervention.reclamationId"
+    required
+    class="input-field"
+  >
+    <option
+      v-for="reclamation in reclamations"
+      :key="reclamation.id"
+      :value="reclamation.id"
+    >
+      {{ reclamation.description }}
+    </option>
+  </select>
+</div>
+
 
       <div class="form-group">
         <label for="technicienId">Technicien affecté (ID) :</label>
@@ -61,15 +68,18 @@
       </div>
 
       <div class="form-group">
-        <button type="submit" class="submit-button">{{ isEditMode ? 'Modifier' : 'Ajouter' }}</button> &nbsp; &nbsp;
+        <button type="submit" class="submit-button">{{ isEditMode ? 'Modifier' : 'Ajouter' }}</button>
+        &nbsp; &nbsp;
         <button type="button" @click="cancel" class="cancel-button">Annuler</button>
       </div>
     </form>
   </div>
 </template>
 
+
 <script>
 import InterventionService from '@/services/InterventionService';
+import ReclamationService from '@/services/ReclamationService';
 
 export default {
   name: 'CreateIntervention',
@@ -82,10 +92,15 @@ export default {
         reclamationId: null,
         technicienId: null,
       },
+      reclamations: [], // Liste des réclamations
       isEditMode: false,
     };
   },
   async created() {
+    // Charger les réclamations
+    await this.fetchReclamations();
+
+    // Charger les données si mode édition
     const interventionId = this.$route.params.id;
     if (interventionId) {
       this.isEditMode = true;
@@ -94,6 +109,14 @@ export default {
     }
   },
   methods: {
+    async fetchReclamations() {
+      try {
+        const response = await ReclamationService.getReclamations();
+        this.reclamations = response.data;
+      } catch (error) {
+        console.error('Erreur lors de la récupération des réclamations:', error);
+      }
+    },
     async saveIntervention() {
       try {
         if (this.isEditMode) {
@@ -112,6 +135,7 @@ export default {
   },
 };
 </script>
+
 
 <style scoped>
 /* Global form styling */
