@@ -29,6 +29,13 @@ class AuthService {
   addRole(roleData) {
     return axios.post(`${AUTH_API_BASE_URL}/addrole`, roleData);
   }
+    /**
+   * Récupérer la liste des utilisateurs
+   * @returns {Promise} - La réponse de l'API contenant la liste des utilisateurs
+   */
+    getUsers() {
+      return axios.get(`${AUTH_API_BASE_URL}/getusers`);
+    }
 }
 
 export default new AuthService();
