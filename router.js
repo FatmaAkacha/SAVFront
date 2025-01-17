@@ -16,6 +16,9 @@ import Login from '@/components/Authentification/Login.vue';
 import registerUser from '@/components/Authentification/Inscription.vue';
 import Role from '@/components/Authentification/Role.vue';
 import DashboardAdmin from '@/components/Dashboard.vue';
+import TechnicienList from '@/components/Technicien/TechnicienList.vue';
+import CreateTechnicien from '@/components/Technicien/CreateTechnicien.vue';
+import EditTechnicien from '@/components/Technicien/EditTechnicien.vue';
 
 const routes = [
   { path: '/', name: 'Login', component: Login}, 
@@ -39,6 +42,10 @@ const routes = [
   { path: '/pieces', name: 'Piece', component: Piece },
   { path: '/create-piece', name: 'CreatePiece', component: CreatePiece },
   { path: '/edit-piece/:id', name: 'EditPiece', component: EditPiece },
+
+  { path: '/techniciens', name: 'TechnicienList', component: TechnicienList },
+  { path: '/technicien/create', name: 'CreateTechnicien', component: CreateTechnicien },
+  { path: '/technicien/edit/:id',name: 'EditTechnicien', component: EditTechnicien },
 
   { path: '/login', name: 'Login', component: Login },
   { path: '/inscription', name: 'Inscription', component: registerUser },

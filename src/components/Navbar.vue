@@ -43,6 +43,16 @@
             ],
           },
           {
+          label: "Techniciens", 
+          path: "/techniciens", 
+          name: "Technicien",
+          children: [
+            { label: "Liste des techniciens", path: "/techniciens", name: "TechnicienList" },
+            { label: "Créer un technicien", path: "/technicien/create", name: "CreateTechnicien" },
+          ],
+        },
+
+          {
             label: "Articles",
             path: "/articles",
             name: "ArticleList" ,
