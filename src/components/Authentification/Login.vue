@@ -8,14 +8,14 @@
         <!-- Form Container -->
         <div class="form-container">
           <img src="https://raw.githubusercontent.com/hicodersofficial/glassmorphism-login-form/master/assets/illustration.png" alt="illustration" class="illustration" />
-          <h1 class="opacity">LOGIN</h1>
+          <h1 class="opacity">SE CONNECTER</h1>
           <form @submit.prevent="loginUser">
-            <input v-model="email" type="email" placeholder="EMAIL" required />
-            <input v-model="password" type="password" placeholder="PASSWORD" required />
-            <button type="submit" class="opacity">SUBMIT</button>
+            <input v-model="email" type="email" placeholder="Email" required />
+            <input v-model="password" type="password" placeholder="Password" required />
+            <button type="submit" class="opacity">SE CONNECTER</button>
           </form>
           <div class="register-forget opacity">
-            <a href="/inscription">REGISTER</a>
+            <a href="/inscription">REGISTRE</a>
           </div>
 
         </div>
@@ -92,7 +92,7 @@ a {
 }
 
 h1 {
-  font-size: 2.5rem;
+  font-size: 2rem;
 }
 
 .container {

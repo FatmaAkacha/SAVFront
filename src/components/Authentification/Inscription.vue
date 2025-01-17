@@ -8,17 +8,17 @@
           <!-- Conteneur du formulaire -->
           <div class="form-container">
             <img src="https://raw.githubusercontent.com/hicodersofficial/glassmorphism-login-form/master/assets/illustration.png" alt="illustration" class="illustration" />
-            <h1 class="opacity">REGISTER</h1>
+            <h1 class="opacity">REGISTRE</h1>
             <form @submit.prevent="registerUser">
-              <input v-model="firstname" type="text" placeholder="FIRSTNAME" required />
-              <input v-model="lastname" type="text" placeholder="LASTNAME" required />
-              <input v-model="username" type="text" placeholder="USERNAME" required />
-              <input v-model="email" type="email" placeholder="EMAIL" required />
-              <input v-model="password" type="password" placeholder="PASSWORD" required />
-              <button type="submit" class="opacity">SUBMIT</button>
+              <input v-model="firstname" type="text" placeholder="Prénom" required />
+              <input v-model="lastname" type="text" placeholder="Nom" required />
+              <input v-model="username" type="text" placeholder="Nom d'utilisateur" required />
+              <input v-model="email" type="email" placeholder="Email" required />
+              <input v-model="password" type="password" placeholder="Mot de passe" required />
+              <button type="submit" class="opacity">S'INSCRIRE</button>
             </form>
             <div class="register-forget opacity">
-            <a href="/login">ALREADY REGISTERED? LOGIN</a>
+            <a href="/login">Déjà inscrit ? Se connecter</a>
           </div>
           </div>
           
