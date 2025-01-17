@@ -11,6 +11,7 @@
           <th>Date</th>
           <th>Sous Garantie</th>
           <th>Montant Facture</th>
+          <th>Reclamation </th>
           <th>Technicien</th>
           <th>Actions</th>
         </tr>
@@ -21,6 +22,7 @@
           <td>{{ new Date(intervention.dateIntervention).toLocaleDateString() }}</td>
           <td>{{ intervention.sousGarantie ? 'Oui' : 'Non' }}</td>
           <td>{{ intervention.montantFacture }}</td>
+          <td>{{ intervention.reclamationId || 'Non assigné' }}</td>
           <td>{{ intervention.technicienId || 'Non assigné' }}</td>
           <td>
             <button @click="goToEditIntervention(intervention.id)" class="action-button">

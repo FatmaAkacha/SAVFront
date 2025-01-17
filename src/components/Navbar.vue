@@ -27,7 +27,6 @@
           },
           {
             label: "Clients",
-            name: "Client",
             children: [
             { label: "Liste des clients", path: "/clients", name: "Client" },
               { label: "Créer un client", path: "/create-client", name: "CreateClient" },
@@ -35,7 +34,6 @@
           },
           {
             label: "Articles",
-            name: "ArticleList",
             children: [
             { label: "Lists des articles", path: "/articles", name: "ArticleList" },
               { label: "Créer un article", path: "/create-article", name: "CreateArticle" },
@@ -43,7 +41,6 @@
           },
           {
             label: "Interventions",
-            name: "InterventionList",
             children: [
             { label: "Liste des interventions", path: "/interventions", name: "InterventionList" },
               { label: "Créer une intervention", path: "/create-intervention", name: "CreateIntervention" },
@@ -51,7 +48,6 @@
           },
           {
             label: "Réclamations",
-            name: "ReclamationList",
             children: [
             { label: "Liste des réclamations", path: "/reclamations", name: "ReclamationList" },
               { label: "Créer une réclamation", path: "/create-reclamation", name: "CreateReclamation" },
@@ -59,7 +55,6 @@
           },
           {
             label: "Pièces",
-            name: "Piece",
             children: [
             { label: "Liste des pièces", path: "/pieces", name: "Piece" },
               { label: "Créer une pièce", path: "/create-piece", name: "CreatePiece" },
@@ -67,10 +62,9 @@
           },
           {
             label: "Authentification",
-            path: "/login",
-            name: "Login",
             children: [
-              { label: "Ajouter un rôle", path: "/add-role", name: "Role" },
+            { label: "Ajouter un rôle", path: "/add-role", name: "Role" },
+            { label: "Se déconnecter", path: "/login", name: "Login" },
             ],
           },
         ],
